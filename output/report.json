@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-07-27T23:22:53.776Z",
+  "threshold": 5,
+  "summary": {
+    "totalItems": 10,
+    "availableCount": 9,
+    "unavailableCount": 1,
+    "lowestStockItem": {
+      "id": 4,
+      "name": "Casa del Terror",
+      "stock": 0
+    }
+  },
+  "lowStockAlerts": [
+    {
+      "id": 4,
+      "name": "Casa del Terror",
+      "category": "Temática",
+      "stock": 0
+    },
+    {
+      "id": 9,
+      "name": "Splash Extremo",
+      "category": "Acuática",
+      "stock": 1
+    },
+    {
+      "id": 5,
+      "name": "Torre de Caída Libre",
+      "category": "Extrema",
+      "stock": 2
+    },
+    {
+      "id": 7,
+      "name": "Rueda Panorámica",
+      "category": "Familiar",
+      "stock": 3
+    },
+    {
+      "id": 2,
+      "name": "Río Salvaje",
+      "category": "Acuática",
+      "stock": 4
+    },
+    {
+      "id": 8,
+      "name": "Tren Fantasma",
+      "category": "Temática",
+      "stock": 5
+    }
+  ]
+}
