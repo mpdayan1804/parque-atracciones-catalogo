@@ -1,7 +1,7 @@
 {
   "name": "parque-catalogo-cli",
   "version": "1.0.0",
-  "description": "CLI que lee el catálogo de atracciones de un parque, calcula un resumen y alertas de inventario bajo, y escribe un reporte JSON.",
+  "description": "CLI que lee el catálogo de atracciones de un parque, calcula un resumen (con precio promedio y extremos), filtra por categoría, y escribe un reporte JSON.",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {

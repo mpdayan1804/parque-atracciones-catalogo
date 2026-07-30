@@ -1,78 +1,105 @@
 import { readCatalog } from "./catalogReader.js";
 import { buildSummary } from "./summary.js";
-import { getLowStockAlerts } from "./alerts.js";
+import { filterByCategory } from "./categoryFilter.js";
 import { writeReport } from "./report.js";
-import type { InventoryReport } from "./types.js";
+import type { Attraction, CatalogSummary, InventoryReport } from "./types.js";
 
 const DATA_PATH = "data/attractions.json";
 const REPORT_PATH = "output/report.json";
-const DEFAULT_THRESHOLD = 5;
 
 /**
- * Parsea --umbral <n> de process.argv. Si no se recibe, usa el valor por defecto.
+ * Parsea --category <valor> de process.argv.
+ * Devuelve null si no se recibió el flag.
  */
-function parseThreshold(argv: string[]): number {
-  const flagIndex = argv.indexOf("--umbral");
-  if (flagIndex === -1) return DEFAULT_THRESHOLD;
+function parseCategory(argv: string[]): string | null {
+  const flagIndex = argv.indexOf("--category");
+  if (flagIndex === -1) return null;
 
   const value = argv[flagIndex + 1];
-  const parsed = Number(value);
-
-  if (value === undefined || Number.isNaN(parsed)) {
+  if (value === undefined) {
     console.warn(
-      `⚠️  Valor inválido para --umbral ("${value}"). Se usará el valor por defecto (${DEFAULT_THRESHOLD}).`
+      "⚠️  Se pasó --category sin ningún valor. Se mostrará el catálogo completo."
     );
-    return DEFAULT_THRESHOLD;
+    return null;
   }
 
-  return parsed;
+  return value;
 }
 
-function printSummary(report: InventoryReport): void {
-  const { summary, lowStockAlerts, threshold } = report;
-
+function printGeneralSummary(summary: CatalogSummary): void {
   console.log("🎢 Resumen del catálogo del parque");
   console.log("──────────────────────────────────");
   console.log(`Total de atracciones:      ${summary.totalItems}`);
   console.log(`Operativas:                ${summary.availableCount}`);
   console.log(`No operativas:             ${summary.unavailableCount}`);
+  console.log(`Precio promedio:           $${summary.averagePrice}`);
 
-  if (summary.lowestStockItem) {
+  if (summary.mostExpensive) {
     console.log(
-      `Menor stock:               ${summary.lowestStockItem.name} (${summary.lowestStockItem.stock} cupos)`
+      `Más cara:                  ${summary.mostExpensive.name} ($${summary.mostExpensive.price})`
     );
   }
-
+  if (summary.cheapest) {
+    console.log(
+      `Más barata:                ${summary.cheapest.name} ($${summary.cheapest.price})`
+    );
+  }
   console.log("");
-  console.log(`🚨 Alertas de inventario bajo (umbral <= ${threshold})`);
-  console.log("──────────────────────────────────");
+}
 
-  if (lowStockAlerts.length === 0) {
-    console.log("Sin alertas: todas las atracciones superan el umbral.");
-  } else {
-    for (const alert of lowStockAlerts) {
-      console.log(
-        `- ${alert.name} [${alert.category}]: ${alert.stock} cupos disponibles`
-      );
+function printFilterResult(
+  requestedCategory: string | null,
+  found: boolean,
+  items: Attraction[],
+  availableCategories: string[]
+): void {
+  if (requestedCategory === null) {
+    console.log(`📋 Mostrando todas las categorías (${items.length} atracciones)`);
+    return;
+  }
+
+  if (!found) {
+    console.log(`⚠️  No se encontró la categoría "${requestedCategory}".`);
+    console.log("Categorías disponibles:");
+    for (const category of availableCategories) {
+      console.log(`  - ${category}`);
     }
+    return;
+  }
+
+  console.log(`📋 Atracciones en la categoría "${requestedCategory}" (${items.length})`);
+  console.log("──────────────────────────────────");
+  for (const item of items) {
+    console.log(`- ${item.name}: $${item.price} (stock: ${item.stock})`);
   }
 }
 
 async function main(): Promise<void> {
-  const threshold = parseThreshold(process.argv.slice(2));
+  const requestedCategory = parseCategory(process.argv.slice(2));
 
   const attractions = await readCatalog(DATA_PATH);
   const summary = buildSummary(attractions);
-  const lowStockAlerts = getLowStockAlerts(attractions, threshold);
+  const filterResult = filterByCategory(attractions, requestedCategory);
+
+  printGeneralSummary(summary);
+  printFilterResult(
+    filterResult.requestedCategory,
+    filterResult.found,
+    filterResult.items,
+    filterResult.availableCategories
+  );
 
   const report: InventoryReport = {
     generatedAt: new Date().toISOString(),
-    threshold,
     summary,
-    lowStockAlerts,
+    filter: {
+      requestedCategory: filterResult.requestedCategory,
+      found: filterResult.found,
+      matchCount: filterResult.items.length,
+    },
+    items: filterResult.items,
   };
 
-  printSummary(report);
   await writeReport(REPORT_PATH, report);
 
   console.log("");

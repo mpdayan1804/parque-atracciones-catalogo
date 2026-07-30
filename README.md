@@ -1,8 +1,9 @@
-# Catálogo con Reporte de Inventario — Parque de Atracciones 🎢
+# Catálogo con Filtro por Categoría — Parque de Atracciones 🎢
 
 CLI construida con **Node.js + TypeScript + async/await** que lee el catálogo
-de atracciones de un parque, calcula un resumen y alertas de inventario bajo,
-y escribe un reporte en `output/report.json`.
+de atracciones de un parque, calcula un resumen (con precio promedio y
+extremos), filtra por categoría, y escribe un reporte en
+`output/report.json`.
 
 ## Dominio: Parque de atracciones
 
@@ -25,16 +26,15 @@ y escribe un reporte en `output/report.json`.
 ## Estructura del proyecto
 
 ```
-starter/
 ├── data/
 │   └── attractions.json     # catálogo (10 atracciones)
 ├── src/
 │   ├── types.ts              # interfaces: Attraction, CatalogSummary, etc.
 │   ├── catalogReader.ts       # RF-01 + RF-05: lectura y manejo de errores
-│   ├── summary.ts             # RF-02: resumen del catálogo
-│   ├── alerts.ts               # RF-03: alertas de inventario bajo
-│   ├── report.ts               # RF-04: escritura del reporte
-│   └── index.ts                 # orquesta todo + parseo de --umbral
+│   ├── summary.ts             # RF-02: resumen (total, promedio, extremos)
+│   ├── categoryFilter.ts      # RF-03: filtro por categoría
+│   ├── report.ts              # RF-04: escritura del reporte
+│   └── index.ts               # orquesta todo + parseo de --category
 ├── output/
 │   └── report.json            # generado al correr el programa
 ├── package.json
@@ -45,22 +45,23 @@ starter/
 ## Cómo correr el proyecto
 
 ```bash
-cd 3-proyecto/starter
 pnpm install
-pnpm dev                  # resumen + alertas con umbral por defecto (5)
-pnpm dev -- --umbral 3    # con umbral propio
-pnpm build                # compila a dist/ sin errores de TypeScript
-pnpm start                # corre la versión compilada
+pnpm dev                        # resumen + catálogo completo
+pnpm dev -- --category Familiar # filtrado por categoría
+pnpm build                      # compila a dist/ sin errores de TypeScript
+pnpm start                      # corre la versión compilada
 ```
 
 ## Requisitos funcionales cubiertos
 
 - **RF-01**: `catalogReader.ts` lee `data/attractions.json` con `fs/promises`.
 - **RF-02**: `summary.ts` calcula total de atracciones, operativas vs no
-  operativas, y la atracción con menor stock.
-- **RF-03**: `alerts.ts` lista las atracciones con `stock <= umbral`
-  (recibido por `--umbral`, por defecto `5`).
-- **RF-04**: `report.ts` escribe resumen + alertas en `output/report.json`.
+  operativas, precio promedio, y la atracción más cara / más barata.
+- **RF-03**: `categoryFilter.ts` filtra por `--category` (case-insensitive).
+  Si la categoría no existe, muestra un aviso y lista las categorías
+  disponibles, sin detener el programa.
+- **RF-04**: `report.ts` escribe resumen + filtro aplicado en
+  `output/report.json`.
 - **RF-05**: si `attractions.json` no existe, se muestra un error
   descriptivo (sin stack trace) y el proceso termina con `process.exit(1)`.
 
@@ -72,16 +73,15 @@ pnpm start                # corre la versión compilada
 Total de atracciones:      10
 Operativas:                9
 No operativas:             1
-Menor stock:               Casa del Terror (0 cupos)
+Precio promedio:           $26200
+Más cara:                  Vórtice Infernal ($45000)
+Más barata:                Autos Chocones ($10000)
 
-🚨 Alertas de inventario bajo (umbral <= 5)
+📋 Atracciones en la categoría "Familiar" (3)
 ──────────────────────────────────
-- Casa del Terror [Temática]: 0 cupos disponibles
-- Splash Extremo [Acuática]: 1 cupos disponibles
-- Torre de Caída Libre [Extrema]: 2 cupos disponibles
-- Rueda Panorámica [Familiar]: 3 cupos disponibles
-- Río Salvaje [Acuática]: 4 cupos disponibles
-- Tren Fantasma [Temática]: 5 cupos disponibles
+- Carrusel Encantado: $15000 (stock: 20)
+- Laberinto de Espejos: $12000 (stock: 15)
+- Rueda Panorámica: $20000 (stock: 3)
 
 ✅ Reporte escrito en output/report.json
 ```
