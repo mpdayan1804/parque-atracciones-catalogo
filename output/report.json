@@ -1,52 +1,25 @@
 {
-  "generatedAt": "2026-07-27T23:22:53.776Z",
-  "threshold": 5,
+  "generatedAt": "2026-07-30T01:51:55.021Z",
   "summary": {
     "totalItems": 10,
     "availableCount": 9,
     "unavailableCount": 1,
-    "lowestStockItem": {
-      "id": 4,
-      "name": "Casa del Terror",
-      "stock": 0
+    "averagePrice": 26200,
+    "mostExpensive": {
+      "id": 1,
+      "name": "Vórtice Infernal",
+      "price": 45000
+    },
+    "cheapest": {
+      "id": 10,
+      "name": "Autos Chocones",
+      "price": 10000
     }
   },
-  "lowStockAlerts": [
-    {
-      "id": 4,
-      "name": "Casa del Terror",
-      "category": "Temática",
-      "stock": 0
-    },
-    {
-      "id": 9,
-      "name": "Splash Extremo",
-      "category": "Acuática",
-      "stock": 1
-    },
-    {
-      "id": 5,
-      "name": "Torre de Caída Libre",
-      "category": "Extrema",
-      "stock": 2
-    },
-    {
-      "id": 7,
-      "name": "Rueda Panorámica",
-      "category": "Familiar",
-      "stock": 3
-    },
-    {
-      "id": 2,
-      "name": "Río Salvaje",
-      "category": "Acuática",
-      "stock": 4
-    },
-    {
-      "id": 8,
-      "name": "Tren Fantasma",
-      "category": "Temática",
-      "stock": 5
-    }
-  ]
+  "filter": {
+    "requestedCategory": "robot",
+    "found": false,
+    "matchCount": 0
+  },
+  "items": []
 }

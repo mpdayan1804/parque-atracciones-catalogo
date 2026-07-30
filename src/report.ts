@@ -3,7 +3,7 @@ import { dirname } from "path";
 import type { InventoryReport } from "./types.js";
 
 /**
- * RF-04: Escribe el resumen + las alertas en output/report.json.
+ * RF-04: Escribe el resumen + el filtro aplicado en output/report.json.
  */
 export async function writeReport(
   filePath: string,

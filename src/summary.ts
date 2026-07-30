@@ -1,27 +1,38 @@
-import type { Attraction, CatalogSummary } from "./types.js";
+import type { Attraction, CatalogSummary, PriceExtreme } from "./types.js";
 
 /**
  * RF-02: Calcula el resumen del catálogo:
- * total de atracciones, disponibles vs no disponibles,
- * y la atracción con menor stock.
+ * total, disponibles vs no disponibles, precio promedio,
+ * y la atracción más cara / más barata.
  */
 export function buildSummary(attractions: Attraction[]): CatalogSummary {
   const totalItems = attractions.length;
   const availableCount = attractions.filter((a) => a.available).length;
   const unavailableCount = totalItems - availableCount;
 
-  let lowestStockItem: CatalogSummary["lowestStockItem"] = null;
+  let averagePrice = 0;
+  let mostExpensive: PriceExtreme | null = null;
+  let cheapest: PriceExtreme | null = null;
 
-  for (const attraction of attractions) {
-    if (
-      lowestStockItem === null ||
-      attraction.stock < lowestStockItem.stock
-    ) {
-      lowestStockItem = {
-        id: attraction.id,
-        name: attraction.name,
-        stock: attraction.stock,
-      };
+  if (totalItems > 0) {
+    const totalPrice = attractions.reduce((sum, a) => sum + a.price, 0);
+    averagePrice = Math.round((totalPrice / totalItems) * 100) / 100;
+
+    for (const attraction of attractions) {
+      if (mostExpensive === null || attraction.price > mostExpensive.price) {
+        mostExpensive = {
+          id: attraction.id,
+          name: attraction.name,
+          price: attraction.price,
+        };
+      }
+      if (cheapest === null || attraction.price < cheapest.price) {
+        cheapest = {
+          id: attraction.id,
+          name: attraction.name,
+          price: attraction.price,
+        };
+      }
     }
   }
 
@@ -29,6 +40,8 @@ export function buildSummary(attractions: Attraction[]): CatalogSummary {
     totalItems,
     availableCount,
     unavailableCount,
-    lowestStockItem,
+    averagePrice,
+    mostExpensive,
+    cheapest,
   };
 }
