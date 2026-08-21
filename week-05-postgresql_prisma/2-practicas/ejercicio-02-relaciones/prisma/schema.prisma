@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum EstadoMantenimiento {
+  pendiente
+  en_proceso
+  completado
+}
+
+model Atraccion {
+  id             Int            @id @default(autoincrement())
+  nombre         String
+  categoria      String
+  activa         Boolean        @default(true)
+  mantenimientos Mantenimiento[]
+
+  @@map("atracciones")
+}
+
+model Mantenimiento {
+  id          Int                 @id @default(autoincrement())
+  descripcion String
+  estado      EstadoMantenimiento @default(pendiente)
+  fecha       DateTime            @default(now())
+
+  atraccion   Atraccion @relation(fields: [atraccionId], references: [id], onDelete: Cascade)
+  atraccionId Int
+
+  @@map("mantenimientos")
+}

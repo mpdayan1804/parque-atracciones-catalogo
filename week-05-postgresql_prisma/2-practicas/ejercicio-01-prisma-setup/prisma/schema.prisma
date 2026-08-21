@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Visitante {
+  id         Int      @id @default(autoincrement())
+  nombre     String
+  edad       Int
+  tienePase  Boolean  @default(false)
+  creadoEn   DateTime @default(now())
+
+  @@map("visitantes")
+}

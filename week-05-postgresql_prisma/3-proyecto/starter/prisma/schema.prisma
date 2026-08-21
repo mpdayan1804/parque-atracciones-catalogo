@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Categoria {
+  mecanica
+  acuatica
+  infantil
+  extrema
+  familiar
+}
+
+model Atraccion {
+  id            Int          @id @default(autoincrement())
+  nombre        String
+  categoria     Categoria
+  precio        Float
+  capacidad     Int
+  alturaMinima  Int          @default(0)
+  activa        Boolean      @default(true)
+  creadoEn      DateTime     @default(now())
+  actualizadoEn DateTime     @updatedAt
+
+  @@map("atracciones")
+}
