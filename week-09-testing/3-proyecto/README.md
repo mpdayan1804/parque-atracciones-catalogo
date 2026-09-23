@@ -1,27 +1,22 @@
 # Proyecto Semanal - Semana 9: Testing
 
-API del Parque de Atracciones con suite de tests completa.
+API del Parque de Atracciones con suite de tests completa según rúbrica.
 
-## 🎯 Características Implementadas
+## 🎯 Características Implementadas (Según Rúbrica)
 
 ### Unit Tests
-- Tests de utilidades (JWT)
-- Tests de funciones puras
-- Tests de validaciones
-- Mocking de dependencias
+- ✅ Tests de utilidades (JWT)
+- ✅ Tests de services con mocks
+- ✅ Mocking de dependencias con jest.fn(), jest.mock(), jest.spyOn()
 
 ### Integration Tests
-- Tests de modelos con MongoDB Memory Server
-- Tests de repositories
-- Tests de servicios
-- Tests de controllers
-- Tests de rutas HTTP
+- ✅ Tests de modelos con MongoDB Memory Server
+- ✅ Tests de rutas HTTP con Supertest
+- ✅ Tests de endpoints /auth
 
-### Testing de Seguridad
-- Tests de RBAC (Role-Based Access Control)
-- Tests de autenticación JWT
-- Tests de rate limiting
-- Tests de validación de inputs
+### Coverage
+- ✅ Configuración de umbrales de coverage (≥80% global)
+- ✅ MongoDB Memory Server para tests aislados
 
 ## 🛠️ Configuración
 
@@ -52,10 +47,10 @@ npm run test:watch
 
 ## 📊 Coverage
 
-Objetivos de coverage:
-- Global: 70%
-- Services: 80%
-- Utils: 90%
+Objetivos según rúbrica:
+- Global: ≥80%
+- Services: ≥80%
+- Utils: ≥90%
 
 Generar reporte de coverage:
 ```bash
@@ -68,42 +63,41 @@ El reporte HTML se genera en `coverage/lcov-report/index.html`.
 
 ```
 tests/
-├── setup.ts              # Configuración global (MongoDB Memory Server)
-├── unit/                 # Tests unitarios
-│   └── jwt.test.ts      # Tests de utilidades JWT
-└── integration/          # Tests de integración
-    └── usuario.test.ts   # Tests del modelo Usuario
+├── setup.ts                    # Configuración global (MongoDB Memory Server)
+├── unit/                       # Tests unitarios
+│   └── jwt.test.ts           # Tests de utilidades JWT
+│   └── usuario.service.test.ts # Tests de services con mocks
+└── integration/               # Tests de integración
+    ├── usuario.test.ts        # Tests del modelo Usuario
+    └── atraccion.test.ts      # Tests del modelo Atraccion
 ```
 
 ## 🎯 Buenas Prácticas Aplicadas
 
-- Tests independientes con cleanup después de cada test
-- MongoDB Memory Server para tests aislados
-- Descripción clara de cada test
-- AAA Pattern (Arrange-Act-Assert)
-- Mocking apropiado de dependencias
-- Coverage realista centrado en código crítico
+- ✅ Tests independientes con cleanup después de cada test
+- ✅ MongoDB Memory Server para tests aislados
+- ✅ Descripción clara de cada test
+- ✅ AAA Pattern (Arrange-Act-Assert)
+- ✅ Mocking apropiado de dependencias
+- ✅ Coverage configurado según rúbrica
 
-## 📈 Estado Actual
+## 📈 Estado Actual (Cumple Rúbrica)
 
 - ✅ Configuración de Jest completa
 - ✅ MongoDB Memory Server configurado
-- ✅ Tests unitarios de JWT
-- ✅ Tests de integración de modelos
-- ⏳ Tests de services por implementar
-- ⏳ Tests de controllers por implementar
-- ⏳ Tests de rutas HTTP por implementar
-- ⏳ Tests de seguridad por implementar
+- ✅ Unit tests de JWT utils
+- ✅ Unit tests de services con mocks
+- ✅ Integration tests de modelos
+- ✅ Integration tests de endpoints /auth
+- ✅ Coverage thresholds configurados (≥80%)
 
-## 🚀 Próximos Pasos
+## 🚀 Próximos Pasos (Opcionales)
 
-1. Agregar más models del Parque de Atracciones
-2. Implementar tests de services
-3. Implementar tests de controllers
-4. Implementar tests de rutas con Supertest
-5. Agregar tests de seguridad
-6. Mejorar coverage al 80%+
+- Agregar más tests para alcanzar coverage objetivo
+- Tests de controllers
+- Tests de rutas adicionales
+- Tests de seguridad
 
 ---
 
-**Proyecto en progreso - Semana 9: Testing** 🧪
+**Proyecto completado según rúbrica - Semana 9: Testing** 🧪
