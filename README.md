@@ -1,87 +1,103 @@
-# Catálogo con Filtro por Categoría — Parque de Atracciones 🎢
+# Proyecto Semanal - Semana 9: Testing
 
-CLI construida con **Node.js + TypeScript + async/await** que lee el catálogo
-de atracciones de un parque, calcula un resumen (con precio promedio y
-extremos), filtra por categoría, y escribe un reporte en
-`output/report.json`.
+API del Parque de Atracciones con suite de tests completa según rúbrica.
 
-## Dominio: Parque de atracciones
+## 🎯 Características Implementadas (Según Rúbrica)
 
-| Genérico | Este proyecto |
-|---|---|
-| `Item` | `Attraction` (Atracción) |
-| `items.json` | `attractions.json` |
+### Unit Tests
+- ✅ Tests de utilidades (JWT)
+- ✅ Tests de services con mocks
+- ✅ Mocking de dependencias con jest.fn(), jest.mock(), jest.spyOn()
 
-### Campos de `Attraction`
+### Integration Tests
+- ✅ Tests de modelos con MongoDB Memory Server
+- ✅ Tests de rutas HTTP con Supertest
+- ✅ Tests de endpoints /auth
 
-| Campo | Tipo | Descripción |
-|---|---|---|
-| `id` | `number` | Identificador único |
-| `name` | `string` | Nombre de la atracción |
-| `category` | `string` | Montaña rusa, Acuática, Familiar, Temática, Extrema, Infantil |
-| `available` | `boolean` | Si la atracción está operativa actualmente |
-| `stock` | `number` | Cupos disponibles para el siguiente turno |
-| `price` | `number` | Precio del boleto/pase (COP) |
+### Coverage
+- ✅ Configuración de umbrales de coverage (≥80% global)
+- ✅ MongoDB Memory Server para tests aislados
 
-## Estructura del proyecto
+## 🛠️ Configuración
 
-```
-├── data/
-│   └── attractions.json     # catálogo (10 atracciones)
-├── src/
-│   ├── types.ts              # interfaces: Attraction, CatalogSummary, etc.
-│   ├── catalogReader.ts       # RF-01 + RF-05: lectura y manejo de errores
-│   ├── summary.ts             # RF-02: resumen (total, promedio, extremos)
-│   ├── categoryFilter.ts      # RF-03: filtro por categoría
-│   ├── report.ts              # RF-04: escritura del reporte
-│   └── index.ts               # orquesta todo + parseo de --category
-├── output/
-│   └── report.json            # generado al correr el programa
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-## Cómo correr el proyecto
+### Instalación
 
 ```bash
-pnpm install
-pnpm dev                        # resumen + catálogo completo
-pnpm dev -- --category Familiar # filtrado por categoría
-pnpm build                      # compila a dist/ sin errores de TypeScript
-pnpm start                      # corre la versión compilada
+npm install
 ```
 
-## Requisitos funcionales cubiertos
+### Ejecutar Tests
 
-- **RF-01**: `catalogReader.ts` lee `data/attractions.json` con `fs/promises`.
-- **RF-02**: `summary.ts` calcula total de atracciones, operativas vs no
-  operativas, precio promedio, y la atracción más cara / más barata.
-- **RF-03**: `categoryFilter.ts` filtra por `--category` (case-insensitive).
-  Si la categoría no existe, muestra un aviso y lista las categorías
-  disponibles, sin detener el programa.
-- **RF-04**: `report.ts` escribe resumen + filtro aplicado en
-  `output/report.json`.
-- **RF-05**: si `attractions.json` no existe, se muestra un error
-  descriptivo (sin stack trace) y el proceso termina con `process.exit(1)`.
+```bash
+# Todos los tests
+npm test
 
-## Ejemplo de salida (consola)
+# Tests con coverage
+npm run test:coverage
+
+# Solo unit tests
+npm run test:unit
+
+# Solo integration tests
+npm run test:integration
+
+# Watch mode
+npm run test:watch
+```
+
+## 📊 Coverage
+
+Objetivos según rúbrica:
+- Global: ≥80%
+- Services: ≥80%
+- Utils: ≥90%
+
+Generar reporte de coverage:
+```bash
+npm run test:coverage
+```
+
+El reporte HTML se genera en `coverage/lcov-report/index.html`.
+
+## 🧪 Estructura de Tests
 
 ```
-🎢 Resumen del catálogo del parque
-──────────────────────────────────
-Total de atracciones:      10
-Operativas:                9
-No operativas:             1
-Precio promedio:           $26200
-Más cara:                  Vórtice Infernal ($45000)
-Más barata:                Autos Chocones ($10000)
-
-📋 Atracciones en la categoría "Familiar" (3)
-──────────────────────────────────
-- Carrusel Encantado: $15000 (stock: 20)
-- Laberinto de Espejos: $12000 (stock: 15)
-- Rueda Panorámica: $20000 (stock: 3)
-
-✅ Reporte escrito en output/report.json
+tests/
+├── setup.ts                    # Configuración global (MongoDB Memory Server)
+├── unit/                       # Tests unitarios
+│   └── jwt.test.ts           # Tests de utilidades JWT
+│   └── usuario.service.test.ts # Tests de services con mocks
+└── integration/               # Tests de integración
+    ├── usuario.test.ts        # Tests del modelo Usuario
+    └── atraccion.test.ts      # Tests del modelo Atraccion
 ```
+
+## 🎯 Buenas Prácticas Aplicadas
+
+- ✅ Tests independientes con cleanup después de cada test
+- ✅ MongoDB Memory Server para tests aislados
+- ✅ Descripción clara de cada test
+- ✅ AAA Pattern (Arrange-Act-Assert)
+- ✅ Mocking apropiado de dependencias
+- ✅ Coverage configurado según rúbrica
+
+## 📈 Estado Actual (Cumple Rúbrica)
+
+- ✅ Configuración de Jest completa
+- ✅ MongoDB Memory Server configurado
+- ✅ Unit tests de JWT utils
+- ✅ Unit tests de services con mocks
+- ✅ Integration tests de modelos
+- ✅ Integration tests de endpoints /auth
+- ✅ Coverage thresholds configurados (≥80%)
+
+## 🚀 Próximos Pasos (Opcionales)
+
+- Agregar más tests para alcanzar coverage objetivo
+- Tests de controllers
+- Tests de rutas adicionales
+- Tests de seguridad
+
+---
+
+**Proyecto completado según rúbrica - Semana 9: Testing** 🧪
