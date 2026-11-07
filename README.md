@@ -1,8 +1,19 @@
 # Catálogo con Reporte de Inventario — Parque de Atracciones 🎢
 
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-20-339933?logo=node.js&logoColor=white)
+
 CLI construida con **Node.js + TypeScript + async/await** que lee el catálogo
 de atracciones de un parque, calcula un resumen y alertas de inventario bajo,
 y escribe un reporte en `output/report.json`.
+
+## Lo que demuestra este proyecto
+
+- **Tipado estricto** con interfaces (`Attraction`, `CatalogSummary`, `LowStockAlert`, `InventoryReport`).
+- **Código modular**: cada requisito vive en su propio módulo (lectura, resumen, alertas, reporte).
+- **E/S asíncrona** con `fs/promises` y `async/await`.
+- **Manejo de errores** amigable: mensajes claros y código de salida `1` cuando falta el archivo de datos.
+- **Argumentos de línea de comandos** (`--umbral`) con validación y valor por defecto.
 
 ## Dominio: Parque de atracciones
 
@@ -25,7 +36,7 @@ y escribe un reporte en `output/report.json`.
 ## Estructura del proyecto
 
 ```
-starter/
+parque-atracciones-catalogo/
 ├── data/
 │   └── attractions.json     # catálogo (10 atracciones)
 ├── src/
@@ -44,13 +55,16 @@ starter/
 
 ## Cómo correr el proyecto
 
+Requisitos: Node.js 18 o superior.
+
 ```bash
-cd 3-proyecto/starter
-pnpm install
-pnpm dev                  # resumen + alertas con umbral por defecto (5)
-pnpm dev -- --umbral 3    # con umbral propio
-pnpm build                # compila a dist/ sin errores de TypeScript
-pnpm start                # corre la versión compilada
+git clone https://github.com/mpdayan1804/parque-atracciones-catalogo.git
+cd parque-atracciones-catalogo
+npm install
+npm run dev                  # resumen + alertas con umbral por defecto (5)
+npm run dev -- --umbral 3    # con umbral propio
+npm run build                # compila a dist/ sin errores de TypeScript
+npm start                    # corre la versión compilada
 ```
 
 ## Requisitos funcionales cubiertos
@@ -85,3 +99,7 @@ Menor stock:               Casa del Terror (0 cupos)
 
 ✅ Reporte escrito en output/report.json
 ```
+
+## Autora
+
+**Dayan Lorena Mape Forero**, estudiante de Tecnología en Desarrollo y Análisis de Datos, Bogotá, Colombia. [GitHub](https://github.com/mpdayan1804)
